@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Absara — Dashboard de Ventas</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/msal-browser/3.10.0/msal-browser.min.js"></script>
+<script src="https://unpkg.com/@azure/msal-browser@3.10.0/lib/msal-browser.min.js"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;1,9..144,300&display=swap');
 
@@ -257,13 +257,8 @@ const CFG = {
   scopes:    ['https://absaralab.operations.dynamics.com/user_impersonation']
 };
 
-const msalCfg = {
-  auth:{ clientId:CFG.clientId, authority:`https://login.microsoftonline.com/${CFG.tenantId}`, redirectUri: location.href.split('?')[0] },
-  cache:{ cacheLocation:'sessionStorage' }
-};
-const msalApp = new window.msal.PublicClientApplication(msalCfg);
-
 // ── STATE ─────────────────────────────────────────────────────────────────────
+let msalApp = null;
 let allData = [];
 let filtered = [];
 let page = 0;
@@ -274,17 +269,27 @@ const MESES = ['','Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','N
 
 // ── INIT ──────────────────────────────────────────────────────────────────────
 async function init() {
-  await msalApp.initialize();
-  const resp = await msalApp.handleRedirectPromise();
-  if (resp) { msalApp.setActiveAccount(resp.account); showApp(resp.account); loadAll(); }
-  else {
-    const accs = msalApp.getAllAccounts();
-    if (accs.length) { msalApp.setActiveAccount(accs[0]); showApp(accs[0]); loadAll(); }
-  }
+  try {
+    if (!window.msal) throw new Error('La librería MSAL no cargó. Abre el archivo desde un servidor local, no con doble clic. Ejecuta: npx serve .');
+    msalApp = new window.msal.PublicClientApplication({
+      auth:{ clientId:CFG.clientId, authority:'https://login.microsoftonline.com/'+CFG.tenantId, redirectUri: 'https://pablohaddadsotoai-png.github.io/absara-dashboard/absara-ventas.html' },
+      cache:{ cacheLocation:'sessionStorage' }
+    });
+    await msalApp.initialize();
+    const resp = await msalApp.handleRedirectPromise();
+    if (resp) { msalApp.setActiveAccount(resp.account); showApp(resp.account); loadAll(); }
+    else {
+      const accs = msalApp.getAllAccounts();
+      if (accs.length) { msalApp.setActiveAccount(accs[0]); showApp(accs[0]); loadAll(); }
+    }
+  } catch(e) { showAuthErr('Error de inicializacion: ' + e.message); }
 }
 
 async function signIn() {
-  try { await msalApp.loginRedirect({ scopes: CFG.scopes }); }
+  try {
+    if (!msalApp) { await init(); }
+    await msalApp.loginRedirect({ scopes: CFG.scopes });
+  }
   catch(e) { showAuthErr(e.message); }
 }
 function signOut() { msalApp.logoutRedirect(); }
@@ -563,7 +568,7 @@ function loadDemo() {
   processData();
 }
 
-init();
+window.addEventListener("load", function() { setTimeout(init, 100); });
 </script>
 </body>
 </html>
