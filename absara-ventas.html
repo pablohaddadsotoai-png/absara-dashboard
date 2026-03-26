@@ -254,7 +254,7 @@ const CFG = {
   clientId:  '90e813db-1a5f-4306-be8a-9468cc86ccea',
   tenantId:  'a9cf1fa0-f581-44b0-bb4f-74c1d7b7d8ac',
   foBase:    'https://lucky-unit-32b1.pablohaddadsotoai.workers.dev',
-  scopes:    ['https://absaralab.com/3998a070-8a0a-440b-8d9a-fbe642b9c1a0/user_impersonation']
+  scopes:    ['https://absaralab.operations.dynamics.com/.default']
 };
 
 // ── STATE ─────────────────────────────────────────────────────────────────────
@@ -298,7 +298,7 @@ async function init() {
 
 async function signIn() {
   try {
-    await msalApp.loginRedirect({ scopes: ['https://absaralab.com/3998a070-8a0a-440b-8d9a-fbe642b9c1a0/user_impersonation'] });
+    await msalApp.loginRedirect({ scopes: ['https://absaralab.operations.dynamics.com/.default'] });
   } catch(e) {
     showAuthErr(e.message);
   }
@@ -317,7 +317,7 @@ function showAuthErr(msg) {
 // ── TOKEN ─────────────────────────────────────────────────────────────────────
 async function getToken() {
   const acc = msalApp.getActiveAccount();
-  const r = await msalApp.acquireTokenSilent({ scopes: ['https://absaralab.com/3998a070-8a0a-440b-8d9a-fbe642b9c1a0/user_impersonation'], account: acc });
+  const r = await msalApp.acquireTokenSilent({ scopes: ['https://absaralab.operations.dynamics.com/.default'], account: acc });
   return r.accessToken;
 }
 
