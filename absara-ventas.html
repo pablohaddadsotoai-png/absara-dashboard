@@ -354,21 +354,31 @@ async function loadAll() {
   const month = document.getElementById('f-month').value;
   const serie = document.getElementById('f-serie').value;
 
-  // Build OData filter
-  let filters = [];
-  if (year)  filters.push(`InvoiceDate ge ${year}-01-01T00:00:00Z and InvoiceDate lt ${parseInt(year)+1}-01-01T00:00:00Z`);
-  if (month) filters.push(`Month eq ${month}`);
-  if (serie) filters.push(`Serie eq '${serie}'`);
-  const filterStr = filters.length ? `$filter=${filters.join(' and ')}&` : '';
-
-  const params = `${filterStr}$top=2000&$select=InvoiceId,InvoiceAccount,Name,ItemId,Qty,SalesPrice,InvoiceDate,SalesId,CurrencyCode&$orderby=InvoiceDate desc`;
-
+  // Build OData filter using InvoiceDate range (Month/Year functions not supported on Ax date type)
+  const yr = parseInt(year) || new Date().getFullYear();
+  const mo = parseInt(month) || 0;
+  
+  let startDate, endDate;
+  if (mo) {
+    const moPad = String(mo).padStart(2,'0');
+    const nextMo = mo === 12 ? 1 : mo + 1;
+    const nextYr = mo === 12 ? yr + 1 : yr;
+    startDate = `${yr}-${moPad}-01T00:00:00Z`;
+    endDate   = `${nextYr}-${String(nextMo).padStart(2,'0')}-01T00:00:00Z`;
+  } else {
+    startDate = `${yr}-01-01T00:00:00Z`;
+    endDate   = `${yr + 1}-01-01T00:00:00Z`;
+  }
+  
+  // OData filter: only date range + optional SalesId (SalesName is client-side only)
+  let oDataFilters = [`InvoiceDate ge ${startDate} and InvoiceDate lt ${endDate}`];
+  if (serie) oDataFilters.push(`SalesId eq '${serie}'`);
+  const filterStr = `$filter=${oDataFilters.join(' and ')}&`;
+  
+  const params = `${filterStr}$top=2000&$select=InvoiceId,InvoiceAccount,SalesName,Name,ItemId,Qty,SalesPrice,InvoiceDate,SalesId,CurrencyCode&$orderby=InvoiceDate desc`;
+  
   try {
     allData = await odataGet('InvoiceTrans', params);
-    if (!allData.length) {
-      // Try alternate field names
-      allData = await odataGet('InvoiceTrans', `${filterStr}$top=2000&$orderby=InvoiceDate desc`);
-    }
     processData();
   } catch(e) {
     showErr('Error API: ' + e.message + ' â mostrando datos de demo.');
