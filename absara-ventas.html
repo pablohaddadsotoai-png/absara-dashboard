@@ -152,7 +152,7 @@ tbody tr:hover td{background:rgba(200,240,74,.03);}
 
     <!-- FILTERS -->
     <div class="filters">
-      <span class="f-label">AÃ±o</span>
+      <span class="f-label">Año</span>
       <select class="f-select" id="f-year">
         <option value="">Todos</option>
         <option value="2026" selected>2026</option>
@@ -203,12 +203,12 @@ tbody tr:hover td{background:rgba(200,240,74,.03);}
       <div class="kpi p">
         <div class="kpi-lbl">Facturas</div>
         <div class="kpi-val" id="k-inv">â</div>
-        <div class="kpi-sub" id="k-inv-sub">registros Ãºnicos</div>
+        <div class="kpi-sub" id="k-inv-sub">registros únicos</div>
       </div>
       <div class="kpi a">
         <div class="kpi-lbl">Clientes Activos</div>
         <div class="kpi-val" id="k-clients">â</div>
-        <div class="kpi-sub">en el perÃ­odo</div>
+        <div class="kpi-sub">en el período</div>
       </div>
     </div>
 
@@ -391,7 +391,7 @@ function filterTable() {
   const q = document.getElementById('f-client').value.toLowerCase();
   filtered = allData.filter(r => {
     const client = (r.InvoiceAccount||r.CustAccount||r.Client||'').toLowerCase();
-    const name   = (r.Name||r.ClientName||'').toLowerCase();
+    const name   = (r.SalesName||r.Name||'').toLowerCase();
     return !q || client.includes(q) || name.includes(q);
   });
   page = 0;
@@ -402,16 +402,16 @@ function filterTable() {
 
 // ââ KPIs ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 function renderKPIs() {
-  const totalSales   = filtered.reduce((s,r) => s + (parseFloat(r.SalesPrice||r.AmountCur||0)), 0);
-  const totalPieces  = filtered.reduce((s,r) => s + (parseFloat(r.Qty||r.Pieces||0)), 0);
+  const totalSales   = filtered.reduce((s,r) => s + (parseFloat(r.SalesPrice||0) * parseFloat(r.Qty||1)), 0);
+  const totalPieces  = filtered.reduce((s,r) => s + (parseFloat(r.Qty||0)), 0);
   const invoices     = new Set(filtered.map(r => r.InvoiceId)).size;
   const clients      = new Set(filtered.map(r => r.InvoiceAccount||r.CustAccount||r.Client||'')).size;
 
   document.getElementById('k-sales').textContent    = '$' + fmt(totalSales);
-  document.getElementById('k-sales-sub').textContent = filtered.length + ' lÃ­neas de factura';
+  document.getElementById('k-sales-sub').textContent = filtered.length + ' líneas de factura';
   document.getElementById('k-pieces').textContent   = fmtN(totalPieces);
   document.getElementById('k-inv').textContent      = invoices;
-  document.getElementById('k-inv-sub').textContent  = 'facturas Ãºnicas';
+  document.getElementById('k-inv-sub').textContent  = 'facturas únicas';
   document.getElementById('k-clients').textContent  = clients;
   document.getElementById('rec-count').textContent  = filtered.length + ' registros';
 }
@@ -453,7 +453,7 @@ function renderCharts() {
   filtered.forEach(r => {
     const d = r.InvoiceDate||r.InvoiceDate||'';
     const m = d ? parseInt(d.slice(5,7)) : 0;
-    if (m) byMonth[m] = (byMonth[m]||0) + parseFloat(r.Qty||r.Pieces||0);
+    if (m) byMonth[m] = (byMonth[m]||0) + parseFloat(r.Qty||0);
   });
   const mKeys = Object.keys(byMonth).map(Number).sort((a,b)=>a-b);
   const mLabels = mKeys.map(m => MESES[m]);
@@ -580,7 +580,7 @@ function loadDemo() {
       Qty: Math.floor(Math.random()*50000)+1000,
       SalesPrice: Math.floor(Math.random()*5000000)+100000,
       InvoiceDate: `${yr}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`,
-      Serie: series[Math.floor(Math.random()*series.length)]
+      SalesId: series[Math.floor(Math.random()*series.length)]
     });
   }
   processData();
