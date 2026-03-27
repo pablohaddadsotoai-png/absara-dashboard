@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Absara — Dashboard de Ventas</title>
+<title>Absara â Dashboard de Ventas</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script src="https://unpkg.com/@azure/msal-browser@3.10.0/lib/msal-browser.min.js"></script>
 <style>
@@ -26,7 +26,7 @@
 *{margin:0;padding:0;box-sizing:border-box;}
 body{background:var(--bg);color:var(--text);font-family:'DM Mono',monospace;font-size:13px;min-height:100vh;}
 
-/* ── AUTH ── */
+/* ââ AUTH ââ */
 #auth-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;gap:28px;position:relative;}
 #auth-screen::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 40% at 50% 0%,rgba(200,240,74,.07) 0%,transparent 70%);pointer-events:none;}
 .auth-logo{font-family:'Fraunces',serif;font-size:48px;font-weight:300;letter-spacing:-1px;}
@@ -37,7 +37,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Mono',monospace;font
 .auth-btn svg{width:18px;height:18px;}
 #auth-err{color:var(--pink);font-size:11px;display:none;max-width:420px;text-align:center;line-height:1.7;}
 
-/* ── DASHBOARD ── */
+/* ââ DASHBOARD ââ */
 #app{display:none;}
 
 .topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 28px;border-bottom:1px solid var(--border);background:var(--bg);position:sticky;top:0;z-index:100;}
@@ -128,7 +128,7 @@ tbody tr:hover td{background:rgba(200,240,74,.03);}
   <div class="auth-sub">Dashboard de Ventas</div>
   <button class="auth-btn" onclick="signIn()">
     <svg viewBox="0 0 21 21" fill="none"><path d="M10 0H0v10h10V0Z" fill="#f25022"/><path d="M21 0H11v10h10V0Z" fill="#7fba00"/><path d="M10 11H0v10h10V11Z" fill="#00a4ef"/><path d="M21 11H11v10h10V11Z" fill="#ffb900"/></svg>
-    Iniciar sesión con Microsoft
+    Iniciar sesiÃ³n con Microsoft
   </button>
   <div id="auth-err"></div>
 </div>
@@ -141,8 +141,8 @@ tbody tr:hover td{background:rgba(200,240,74,.03);}
       <div class="page-label">Dashboard de Ventas</div>
     </div>
     <div class="topbar-right">
-      <span class="user-dot"></span><span class="user-name" id="uname">—</span>
-      <button class="btn" onclick="loadAll()">↻ Actualizar</button>
+      <span class="user-dot"></span><span class="user-name" id="uname">â</span>
+      <button class="btn" onclick="loadAll()">â» Actualizar</button>
       <button class="btn-out" onclick="signOut()">Salir</button>
     </div>
   </div>
@@ -152,7 +152,7 @@ tbody tr:hover td{background:rgba(200,240,74,.03);}
 
     <!-- FILTERS -->
     <div class="filters">
-      <span class="f-label">Año</span>
+      <span class="f-label">AÃ±o</span>
       <select class="f-select" id="f-year">
         <option value="">Todos</option>
         <option value="2026" selected>2026</option>
@@ -173,7 +173,7 @@ tbody tr:hover td{background:rgba(200,240,74,.03);}
         <option value="11">Noviembre</option><option value="12">Diciembre</option>
       </select>
       <div class="f-sep"></div>
-      <span class="f-label">Serie</span>
+      <span class="f-label">Orden</span>
       <select class="f-select" id="f-serie">
         <option value="">Todas</option>
         <option value="A">A</option>
@@ -183,7 +183,7 @@ tbody tr:hover td{background:rgba(200,240,74,.03);}
       </select>
       <div class="f-sep"></div>
       <span class="f-label">Cliente</span>
-      <input class="f-input" id="f-client" placeholder="Buscar cliente…" style="min-width:200px;" oninput="filterTable()">
+      <input class="f-input" id="f-client" placeholder="Buscar clienteâ¦" style="min-width:200px;" oninput="filterTable()">
       <div class="f-sep"></div>
       <button class="btn" onclick="loadAll()">Aplicar</button>
     </div>
@@ -192,23 +192,23 @@ tbody tr:hover td{background:rgba(200,240,74,.03);}
     <div class="kpi-row">
       <div class="kpi g">
         <div class="kpi-lbl">Ventas Totales $</div>
-        <div class="kpi-val" id="k-sales">—</div>
-        <div class="kpi-sub" id="k-sales-sub">cargando…</div>
+        <div class="kpi-val" id="k-sales">â</div>
+        <div class="kpi-sub" id="k-sales-sub">cargandoâ¦</div>
       </div>
       <div class="kpi t">
         <div class="kpi-lbl">Piezas Vendidas</div>
-        <div class="kpi-val" id="k-pieces">—</div>
+        <div class="kpi-val" id="k-pieces">â</div>
         <div class="kpi-sub" id="k-pieces-sub">total de unidades</div>
       </div>
       <div class="kpi p">
         <div class="kpi-lbl">Facturas</div>
-        <div class="kpi-val" id="k-inv">—</div>
-        <div class="kpi-sub" id="k-inv-sub">registros únicos</div>
+        <div class="kpi-val" id="k-inv">â</div>
+        <div class="kpi-sub" id="k-inv-sub">registros Ãºnicos</div>
       </div>
       <div class="kpi a">
         <div class="kpi-lbl">Clientes Activos</div>
-        <div class="kpi-val" id="k-clients">—</div>
-        <div class="kpi-sub">en el período</div>
+        <div class="kpi-val" id="k-clients">â</div>
+        <div class="kpi-sub">en el perÃ­odo</div>
       </div>
     </div>
 
@@ -234,14 +234,14 @@ tbody tr:hover td{background:rgba(200,240,74,.03);}
     <div class="table-card">
       <div class="card-head">
         <div class="card-title">Listado de Facturas</div>
-        <span id="rec-count" style="font-size:11px;color:var(--muted);">—</span>
+        <span id="rec-count" style="font-size:11px;color:var(--muted);">â</span>
       </div>
       <div id="tbl-wrap"><div class="loading">Cargando datos<span class="spin"></span></div></div>
       <div class="pager">
-        <span id="page-info">—</span>
+        <span id="page-info">â</span>
         <div class="pager-btns">
-          <button class="btn" onclick="prevPage()">← Anterior</button>
-          <button class="btn" onclick="nextPage()">Siguiente →</button>
+          <button class="btn" onclick="prevPage()">â Anterior</button>
+          <button class="btn" onclick="nextPage()">Siguiente â</button>
         </div>
       </div>
     </div>
@@ -249,7 +249,7 @@ tbody tr:hover td{background:rgba(200,240,74,.03);}
 </div>
 
 <script>
-// ── CONFIG ────────────────────────────────────────────────────────────────────
+// ââ CONFIG ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 const CFG = {
   clientId:  '90e813db-1a5f-4306-be8a-9468cc86ccea',
   tenantId:  'a9cf1fa0-f581-44b0-bb4f-74c1d7b7d8ac',
@@ -257,7 +257,7 @@ const CFG = {
   scopes:    ['https://absaralab.operations.dynamics.com/.default']
 };
 
-// ── STATE ─────────────────────────────────────────────────────────────────────
+// ââ STATE âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 let msalApp = null;
 let allData = [];
 let filtered = [];
@@ -266,7 +266,7 @@ const PAGE_SIZE = 25;
 let clientChart = null, monthChart = null;
 const MESES = ['','Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
 
-// ── INIT ──────────────────────────────────────────────────────────────────────
+// ââ INIT ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 async function init() {
   try {
     msalApp = new msal.PublicClientApplication({
@@ -307,14 +307,14 @@ function signOut() { msalApp.logoutRedirect(); }
 function showApp(acc) {
   document.getElementById('auth-screen').style.display = 'none';
   document.getElementById('app').style.display = 'block';
-  document.getElementById('uname').textContent = acc.username || acc.name || '—';
+  document.getElementById('uname').textContent = acc.username || acc.name || 'â';
 }
 function showAuthErr(msg) {
   const el = document.getElementById('auth-err');
   el.style.display='block'; el.textContent = 'Error: '+msg;
 }
 
-// ── TOKEN ─────────────────────────────────────────────────────────────────────
+// ââ TOKEN âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 async function getToken() {
   const acc = msalApp.getActiveAccount();
   const req = { scopes: ['https://absaralab.operations.dynamics.com/.default'], account: acc, forceRefresh: true };
@@ -327,7 +327,7 @@ async function getToken() {
   }
 }
 
-// ── ODATA ─────────────────────────────────────────────────────────────────────
+// ââ ODATA âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 async function odataGet(entity, params='') {
   const token = await getToken();
   const url = `${CFG.foBase}/data/${entity}?${params}`;
@@ -340,12 +340,12 @@ async function odataGet(entity, params='') {
       'OData-Version':'4.0',
     }
   });
-  if (!res.ok) throw new Error(`${entity} → ${res.status} ${res.statusText}`);
+  if (!res.ok) throw new Error(`${entity} â ${res.status} ${res.statusText}`);
   const j = await res.json();
   return j.value || [];
 }
 
-// ── LOAD ──────────────────────────────────────────────────────────────────────
+// ââ LOAD ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 async function loadAll() {
   document.getElementById('err-bar').style.display='none';
   document.getElementById('tbl-wrap').innerHTML = '<div class="loading">Cargando InvoiceTrans<span class="spin"></span></div>';
@@ -356,32 +356,32 @@ async function loadAll() {
 
   // Build OData filter
   let filters = [];
-  if (year)  filters.push(`Year eq ${year}`);
+  if (year)  filters.push(`InvoiceDate ge ${year}-01-01T00:00:00Z and InvoiceDate lt ${parseInt(year)+1}-01-01T00:00:00Z`);
   if (month) filters.push(`Month eq ${month}`);
   if (serie) filters.push(`Serie eq '${serie}'`);
   const filterStr = filters.length ? `$filter=${filters.join(' and ')}&` : '';
 
-  const params = `${filterStr}$top=2000&$select=InvoiceId,AccountNum,Name,ItemId,Qty,SalesPrice,TransDate,Serie,CurrencyCode&$orderby=TransDate desc`;
+  const params = `${filterStr}$top=2000&$select=InvoiceId,InvoiceAccount,Name,ItemId,Qty,SalesPrice,InvoiceDate,SalesId,CurrencyCode&$orderby=InvoiceDate desc`;
 
   try {
     allData = await odataGet('InvoiceTrans', params);
     if (!allData.length) {
       // Try alternate field names
-      allData = await odataGet('InvoiceTrans', `${filterStr}$top=2000&$orderby=TransDate desc`);
+      allData = await odataGet('InvoiceTrans', `${filterStr}$top=2000&$orderby=InvoiceDate desc`);
     }
     processData();
   } catch(e) {
-    showErr('Error API: ' + e.message + ' — mostrando datos de demo.');
+    showErr('Error API: ' + e.message + ' â mostrando datos de demo.');
     loadDemo();
   }
 }
 
 function showErr(msg) {
   const el = document.getElementById('err-bar');
-  el.style.display='block'; el.textContent = '⚠ ' + msg;
+  el.style.display='block'; el.textContent = 'â  ' + msg;
 }
 
-// ── PROCESS ───────────────────────────────────────────────────────────────────
+// ââ PROCESS âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 function processData() {
   filtered = [...allData];
   filterTable();
@@ -390,7 +390,7 @@ function processData() {
 function filterTable() {
   const q = document.getElementById('f-client').value.toLowerCase();
   filtered = allData.filter(r => {
-    const client = (r.AccountNum||r.CustAccount||r.Client||'').toLowerCase();
+    const client = (r.InvoiceAccount||r.CustAccount||r.Client||'').toLowerCase();
     const name   = (r.Name||r.ClientName||'').toLowerCase();
     return !q || client.includes(q) || name.includes(q);
   });
@@ -400,32 +400,32 @@ function filterTable() {
   renderTable();
 }
 
-// ── KPIs ──────────────────────────────────────────────────────────────────────
+// ââ KPIs ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 function renderKPIs() {
   const totalSales   = filtered.reduce((s,r) => s + (parseFloat(r.SalesPrice||r.AmountCur||0)), 0);
   const totalPieces  = filtered.reduce((s,r) => s + (parseFloat(r.Qty||r.Pieces||0)), 0);
   const invoices     = new Set(filtered.map(r => r.InvoiceId)).size;
-  const clients      = new Set(filtered.map(r => r.AccountNum||r.CustAccount||r.Client||'')).size;
+  const clients      = new Set(filtered.map(r => r.InvoiceAccount||r.CustAccount||r.Client||'')).size;
 
   document.getElementById('k-sales').textContent    = '$' + fmt(totalSales);
-  document.getElementById('k-sales-sub').textContent = filtered.length + ' líneas de factura';
+  document.getElementById('k-sales-sub').textContent = filtered.length + ' lÃ­neas de factura';
   document.getElementById('k-pieces').textContent   = fmtN(totalPieces);
   document.getElementById('k-inv').textContent      = invoices;
-  document.getElementById('k-inv-sub').textContent  = 'facturas únicas';
+  document.getElementById('k-inv-sub').textContent  = 'facturas Ãºnicas';
   document.getElementById('k-clients').textContent  = clients;
   document.getElementById('rec-count').textContent  = filtered.length + ' registros';
 }
 
-// ── CHARTS ────────────────────────────────────────────────────────────────────
+// ââ CHARTS ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 function renderCharts() {
   // Sales by client (top 10)
   const byClient = {};
   filtered.forEach(r => {
-    const k = r.AccountNum || r.CustAccount || r.Client || 'Sin cliente';
+    const k = r.InvoiceAccount || r.CustAccount || r.Client || 'Sin cliente';
     byClient[k] = (byClient[k]||0) + parseFloat(r.SalesPrice||r.AmountCur||0);
   });
   const sorted = Object.entries(byClient).sort((a,b)=>b[1]-a[1]).slice(0,10);
-  const clLabels = sorted.map(e => e[0].length>22 ? e[0].slice(0,20)+'…' : e[0]);
+  const clLabels = sorted.map(e => e[0].length>22 ? e[0].slice(0,20)+'â¦' : e[0]);
   const clVals   = sorted.map(e => e[1]);
 
   if (clientChart) clientChart.destroy();
@@ -451,7 +451,7 @@ function renderCharts() {
   // Pieces by month
   const byMonth = {};
   filtered.forEach(r => {
-    const d = r.TransDate||r.InvoiceDate||'';
+    const d = r.InvoiceDate||r.InvoiceDate||'';
     const m = d ? parseInt(d.slice(5,7)) : 0;
     if (m) byMonth[m] = (byMonth[m]||0) + parseFloat(r.Qty||r.Pieces||0);
   });
@@ -478,7 +478,7 @@ function renderCharts() {
   });
 }
 
-// ── TABLE ─────────────────────────────────────────────────────────────────────
+// ââ TABLE âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 function renderTable() {
   const wrap = document.getElementById('tbl-wrap');
   if (!filtered.length) {
@@ -490,16 +490,16 @@ function renderTable() {
   const rows  = filtered.slice(start, start + PAGE_SIZE);
   const total = filtered.length;
   document.getElementById('page-info').textContent =
-    `Mostrando ${start+1}–${Math.min(start+PAGE_SIZE,total)} de ${total}`;
+    `Mostrando ${start+1}â${Math.min(start+PAGE_SIZE,total)} de ${total}`;
 
   wrap.innerHTML = `
     <div class="table-scroll">
     <table>
       <thead><tr>
         <th>Factura</th>
-        <th>Serie</th>
+        <th>Orden</th>
         <th>Cliente</th>
-        <th>Artículo</th>
+        <th>ArtÃ­culo</th>
         <th>Nombre</th>
         <th style="text-align:right">Piezas</th>
         <th style="text-align:right">Ventas $</th>
@@ -507,14 +507,14 @@ function renderTable() {
       </tr></thead>
       <tbody>
         ${rows.map(r => `<tr>
-          <td>${r.InvoiceId||'—'}</td>
+          <td>${r.InvoiceId||'â'}</td>
           <td>${seriePill(r.Serie||r.InvoiceType||'')}</td>
-          <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${r.AccountNum||r.CustAccount||r.Client||'—'}</td>
-          <td style="color:var(--muted)">${r.ItemId||'—'}</td>
-          <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--muted)">${r.Name||'—'}</td>
+          <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${r.InvoiceAccount||r.CustAccount||r.Client||'â'}</td>
+          <td style="color:var(--muted)">${r.ItemId||'â'}</td>
+          <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--muted)">${r.Name||'â'}</td>
           <td style="text-align:right">${fmtN(r.Qty||r.Pieces||0)}</td>
           <td style="text-align:right;color:var(--accent)">$${fmt(r.SalesPrice||r.AmountCur||0)}</td>
-          <td style="color:var(--muted)">${fmtDate(r.TransDate||r.InvoiceDate||'')}</td>
+          <td style="color:var(--muted)">${fmtDate(r.InvoiceDate||r.InvoiceDate||'')}</td>
         </tr>`).join('')}
       </tbody>
     </table>
@@ -524,7 +524,7 @@ function renderTable() {
 function prevPage() { if (page > 0) { page--; renderTable(); } }
 function nextPage() { if ((page+1)*PAGE_SIZE < filtered.length) { page++; renderTable(); } }
 
-// ── HELPERS ───────────────────────────────────────────────────────────────────
+// ââ HELPERS âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 function fmt(n) {
   n = parseFloat(n)||0;
   if (n>=1e9) return (n/1e9).toFixed(1)+'B';
@@ -539,16 +539,16 @@ function fmtN(n) {
   return n.toFixed(0);
 }
 function fmtDate(d) {
-  if (!d) return '—';
+  if (!d) return 'â';
   return d.slice(0,10);
 }
 function seriePill(s) {
-  if (!s) return '<span style="color:var(--muted)">—</span>';
+  if (!s) return '<span style="color:var(--muted)">â</span>';
   const cls = ['A','B','C','E'].includes(s) ? `serie-${s}` : 'serie-A';
   return `<span class="serie ${cls}">${s}</span>`;
 }
 
-// ── DEMO DATA ─────────────────────────────────────────────────────────────────
+// ââ DEMO DATA âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 function loadDemo() {
   const clients = [
     'GENOMMA LABORATORIES MEXICO','S C JOHNSON AND SON','UNILEVER MANUFACTURERA',
@@ -559,7 +559,7 @@ function loadDemo() {
     {id:'8100006791',name:'TTL CRM SLD LANOLINA ROSA 400G'},
     {id:'60105418',name:'Otros Procesos'},
     {id:'05826204',name:'NB HIAL TR 12X300G'},
-    {id:'400673',name:'D BOLD 3 CARIÑITOS CJ 1L 12PZ'},
+    {id:'400673',name:'D BOLD 3 CARIÃITOS CJ 1L 12PZ'},
     {id:'900-03257',name:'Coconut Santal Retail Single Item'},
     {id:'84163149',name:'PONDS CR CLARANT B3 SECA 24X50G'},
     {id:'8100004829',name:'TN SH SUSTENTABLE ENGROSADOR 950ML'},
@@ -574,12 +574,12 @@ function loadDemo() {
     const yr = 2026;
     allData.push({
       InvoiceId: (Math.random()>.5?'A':'B')+(70000+Math.floor(Math.random()*30000)),
-      AccountNum: c,
+      InvoiceAccount: c,
       ItemId: it.id,
       Name: it.name,
       Qty: Math.floor(Math.random()*50000)+1000,
       SalesPrice: Math.floor(Math.random()*5000000)+100000,
-      TransDate: `${yr}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`,
+      InvoiceDate: `${yr}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`,
       Serie: series[Math.floor(Math.random()*series.length)]
     });
   }
