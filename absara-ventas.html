@@ -400,7 +400,7 @@ function processData() {
 function filterTable() {
   const q = document.getElementById('f-client').value.toLowerCase();
   filtered = allData.filter(r => {
-    const client = (r.InvoiceAccount||r.CustAccount||r.Client||'').toLowerCase();
+    const client = (r.SalesName||r.InvoiceAccount||'').toLowerCase();
     const name   = (r.SalesName||r.Name||'').toLowerCase();
     return !q || client.includes(q) || name.includes(q);
   });
@@ -415,7 +415,7 @@ function renderKPIs() {
   const totalSales   = filtered.reduce((s,r) => s + (parseFloat(r.SalesPrice||0) * parseFloat(r.Qty||1)), 0);
   const totalPieces  = filtered.reduce((s,r) => s + (parseFloat(r.Qty||0)), 0);
   const invoices     = new Set(filtered.map(r => r.InvoiceId)).size;
-  const clients      = new Set(filtered.map(r => r.InvoiceAccount||r.CustAccount||r.Client||'')).size;
+  const clients      = new Set(filtered.map(r => r.SalesName||r.InvoiceAccount||'')).size;
 
   document.getElementById('k-sales').textContent    = '$' + fmt(totalSales);
   document.getElementById('k-sales-sub').textContent = filtered.length + ' líneas de factura';
@@ -429,10 +429,12 @@ function renderKPIs() {
 // ââ CHARTS ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 function renderCharts() {
   // Sales by client (top 10)
-  const byClient = {};
+  const byClient={};
+  const clientNames={};
   filtered.forEach(r => {
-    const k = r.InvoiceAccount || r.CustAccount || r.Client || 'Sin cliente';
-    byClient[k] = (byClient[k]||0) + parseFloat(r.SalesPrice||r.AmountCur||0);
+    const k=r.InvoiceAccount||'Sin cliente';
+    if(r.SalesName)clientNames[k]=r.SalesName;
+    byClient[k]=(byClient[k]||0)+parseFloat(r.SalesPrice||0)*parseFloat(r.Qty||1);
   });
   const sorted = Object.entries(byClient).sort((a,b)=>b[1]-a[1]).slice(0,10);
   const clLabels = sorted.map(e => e[0].length>22 ? e[0].slice(0,20)+'â¦' : e[0]);
@@ -519,11 +521,11 @@ function renderTable() {
         ${rows.map(r => `<tr>
           <td>${r.InvoiceId||'â'}</td>
           <td>${seriePill(r.Serie||r.InvoiceType||'')}</td>
-          <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${r.InvoiceAccount||r.CustAccount||r.Client||'â'}</td>
+          <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${r.SalesName||r.InvoiceAccount||'â'}</td>
           <td style="color:var(--muted)">${r.ItemId||'â'}</td>
           <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--muted)">${r.Name||'â'}</td>
-          <td style="text-align:right">${fmtN(r.Qty||r.Pieces||0)}</td>
-          <td style="text-align:right;color:var(--accent)">$${fmt(r.SalesPrice||r.AmountCur||0)}</td>
+          <td style="text-align:right">${r.Qty<0?'('+fmtN(Math.abs(r.Qty||0))+')':r.Qty<0?'('+fmtN(Math.abs(r.Qty||0))+')':fmtN(r.Qty||0)}</td>
+          <td style="text-align:right;color:var(--accent)">$${fmt(Math.abs(parseFloat(r.SalesPrice||0)*parseFloat(r.Qty||1)))}</td>
           <td style="color:var(--muted)">${fmtDate(r.InvoiceDate||r.InvoiceDate||'')}</td>
         </tr>`).join('')}
       </tbody>
